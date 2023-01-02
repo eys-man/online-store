@@ -1,23 +1,93 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-        <title>Online Store</title>
-        <link rel="stylesheet" href="index.css">
-    </head>
-    <body>
 
-        <!-- <header class="header">
-            <a href="#" class="link"><h1 class="h1">Online Store</h1></a>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Online Store</title>
+    <link rel="stylesheet" type="text/css" href="./index.css">
+</head>
+
+<body>
+
+    <!-- <header class="header">
+            <a href="#main-page" class="link"><h1 class="h1">Online Store</h1></a>
         </header> -->
 
-        <main class="main">
+    <main class="main">
+        <!-- <aside class="filters">
 
-        </main>
+            </aside>
+            <section class="gallery">
 
-        <!-- <footer class="footer">
+            </section> -->
+        <!-- <div class="range_container">
+            <div class="sliders_control">
+                <input id="fromSlider" type="range" value="0" min="0" max="100" />
+                <input id="toSlider" type="range" value="100" min="0" max="100" />
+            </div>
+            <div class="form_indicators">
+                <p id="from-p">0</p>
+                <p id="to-p">100</p>
+            </div>
+        </div> -->
+
+    </main>
+
+    <!-- <script>
+        function controlFromSlider(fromSlider, toSlider) {
+            const [from, to] = getParsed(fromSlider, toSlider);
+            const p = document.getElementById('from-p');
+
+            if (from > to) {
+                fromSlider.value = to;
+                p.innerText = `${to}`;
+            } else {
+                p.innerText = `${from}`;
+            }
+        }
+
+        function controlToSlider(fromSlider, toSlider) {
+            const [from, to] = getParsed(fromSlider, toSlider);
+            const p = document.getElementById('to-p');
+
+            setToggleAccessible(toSlider);
+            if (from <= to) {
+                toSlider.value = to;
+                p.innerText = `${to}`;
+            } else {
+                p.innerText = `${from}`;
+                toSlider.value = from;
+            }
+        }
+
+        function getParsed(currentFrom, currentTo) {
+            const from = parseInt(currentFrom.value, 10);
+            const to = parseInt(currentTo.value, 10);
+            return [from, to];
+        }
+
+        function setToggleAccessible(currentTarget) {
+            const toSlider = document.querySelector('#toSlider');
+            if (Number(currentTarget.value) <= 0) {
+                toSlider.style.zIndex = 2;
+            } else {
+                toSlider.style.zIndex = 0;
+            }
+        }
+
+        const fromSlider = document.querySelector('#fromSlider');
+        const toSlider = document.querySelector('#toSlider');
+
+        setToggleAccessible(toSlider);
+
+        fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider);
+        toSlider.oninput = () => controlToSlider(fromSlider, toSlider);
+
+    </script> -->
+
+    <!-- <footer class="footer">
             <ul class="footer-ul">
                 <li><a class="link" href="https://rs.school/js/"><img src="img/logo_rs_school.svg" alt=""></a></li>
                 <li><p>2022</p></li>
@@ -28,6 +98,7 @@
             </ul>
         </footer> -->
 
-        <!-- <script src="./index.js"></script> -->
-    </body>
+    <!-- <script src="./index.js"></script> -->
+</body>
+
 </html>

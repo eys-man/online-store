@@ -1,27 +1,19 @@
 html {
-    margin: auto 0;
     height: 100%;
     box-sizing: border-box;
 }
+
 body {
     display: flex;
     flex-direction: column;
     height: 100%;
-    margin: auto 0;
-    /* color: #fff;
-    background: #17181c; */
+    max-width: 1920px;
+    margin: auto;
     font-family: sans-serif;
     justify-content: space-between;
     padding: 0;
 }
-.link {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    /* justify-content: space-between; */
-    height: 100%;
-    text-decoration: none;
-}
+
 .header {
     background-color: aqua;
     height: 64px;
@@ -29,47 +21,53 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    padding: 0 16px;
 }
-.h1 {
-    margin: 0;
-    padding: 0 8px;
-    font-size: 36px;
-    font-weight: 800;
-}
-.main {
-    height: calc(100% - 112px);
+
+.main,
+.main-page {
+    flex-grow: 1;
     display: flex;
-    flex-direction: column;
-    /* color: #fff; */
+    flex-direction: row;
     background: #b7c4f7;
-    font-family: sans-serif;
     justify-content: space-between;
     margin: 0;
     padding: 0;
+    overflow-y: auto;
 }
+
+.filters {
+    width: 400px;
+    background-color: rgb(150, 149, 113);
+    overflow-y: auto;
+}
+
+.category,
+.brand {
+    display: flex;
+    flex-direction: column;
+    margin: 8px 0;
+    background-color: rgb(235, 200, 236);
+    width: 100%;
+    height: 300px;
+}
+
+.price,
+.stock {
+    margin: 8px 0;
+    background-color: rgb(235, 200, 236);
+    width: 100%;
+    height: 90px;
+    overflow: auto;
+}
+
+.gallery-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(103, 107, 99);
+}
+
 .footer {
-    height: 48px;
-}
-.footer-ul {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    list-style: none;
-    background-color: rgb(80,80,80);
-    padding-inline: 0;
-    margin-inline: 0;
-    margin-block: 0;
-}
-.footer-ul li{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: 100%;
-    color: white;
-}
-.footer ul li img {
     height: 48px;
 }

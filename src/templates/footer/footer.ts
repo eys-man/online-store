@@ -1,4 +1,5 @@
-import Component from './components';
+import Component from '../components';
+import './footer.css';
 
 class Footer extends Component {
     constructor(tagName: string, className: string) {
