@@ -3,14 +3,15 @@ import './selector.css';
 
 class Selector extends Component {
     options = ['sort by price ↑', 'sort by price ↓', 'sort by rating ↑', 'sort by rating ↓'];
+    sortingMode: string;
     constructor(tagName: string, className: string) {
         super(tagName, className);
-        // this.selector = document.createElement('select');
+        this.sortingMode = this.options[0];
+
         this.options.forEach((x) => {
             const opt = document.createElement('option');
             opt.value = x;
             opt.text = x;
-            // alert('добавил ' + x);
             this.container.append(opt);
         });
     }
@@ -19,8 +20,12 @@ class Selector extends Component {
         // this.container.append(this.selector);
 
         this.container.addEventListener('change', () => {
-            //alert('выбрана сортировка ' + (this.container as HTMLSelectElement).value);
-            // TODO: отсортировать массив товаров для вывода
+            if (this.sortingMode !== (this.container as HTMLSelectElement).value) {
+                this.sortingMode = (this.container as HTMLSelectElement).value;
+                alert('выбрана сортировка ' + this.sortingMode);
+
+                // TODO: отсортировать массив товаров для вывода
+            }
         });
 
         return this.container;
