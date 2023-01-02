@@ -1,0 +1,53 @@
+.gallery {
+    /* flex-grow: 1; */
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.card-square {
+    position: relative;
+    width: 340px;
+    height: 340px;
+    margin: 10px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    color: white;
+    overflow: hidden;
+}
+.title {
+    padding: 4px;
+    margin: 0;
+    /* z-index: 2; */
+}
+.card-buttons {
+
+}
+
+.card-square div {
+    padding: 4px;
+    margin: 0;
+    /* z-index: 2; */
+}
+
+.card-square div p {
+    padding: 2px;
+    margin: 0;
+    /* z-index: 2; */
+}
+
+.card-square img {
+    /* position: absolute; */
+    padding: 4px;
+    width: 120px;
+    height: 120px;
+}

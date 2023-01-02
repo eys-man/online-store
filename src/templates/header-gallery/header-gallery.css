@@ -1,6 +1,7 @@
 .header-gallery {
-    padding: 4px;
-    height: 32px;
+    box-sizing: border-box;
+    /* padding: 4px; */
+    height: 40px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;

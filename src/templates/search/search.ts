@@ -16,10 +16,6 @@ class Search extends Component {
     }
 
     render() {
-        this.container.style.display = 'flex';
-        this.container.style.flexDirection = 'row';
-        this.container.style.justifyContent = 'space-between';
-
         this.container.append(this.search);
         this.container.append(this.reset);
 

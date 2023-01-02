@@ -1,4 +1,4 @@
-import Component from './components';
+import Component from '../components';
 
 class CheckBoxLine extends Component {
     private id: string; // название категории/брэнда, он же - id элемента

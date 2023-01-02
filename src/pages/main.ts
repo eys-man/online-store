@@ -44,7 +44,7 @@ class MainPage extends Page {
         const headerGallery = new HeaderGallery('div', 'header-gallery');
         section.append(headerGallery.render());
 
-        const gallery = new Gallery('div', 'gallery', 'gallery');
+        const gallery = new Gallery('div', 'gallery');
         section.append(gallery.render());
 
         this.container.append(section);

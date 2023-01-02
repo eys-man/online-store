@@ -1,14 +1,20 @@
+import CardSquare from '../card-square/card-square';
 import Component from '../components';
+import Data from '../data';
 import './gallery.css';
 
 class Gallery extends Component {
-    title: string;
-    constructor(tagName: string, className: string, title: string) {
+    constructor(tagName: string, className: string) {
         super(tagName, className);
-        this.title = title;
     }
 
     render() {
+        Data.products.forEach((x) => {
+            const card = new CardSquare('div', 'card-square', x);
+
+            this.container.append(card.render());
+        });
+
         return this.container;
     }
 }

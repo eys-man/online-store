@@ -37,7 +37,8 @@ body {
 }
 
 .filters {
-    width: 400px;
+    width: 380px;
+    min-width: 380px;
     background-color: rgb(150, 149, 113);
     overflow-y: auto;
 }

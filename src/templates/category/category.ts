@@ -1,5 +1,5 @@
 import Component from '../components';
-import CheckBoxLine from '../checkbox';
+import CheckBoxLine from '../checkbox/checkbox';
 import Data from '../data';
 import './category.css';
 

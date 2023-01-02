@@ -4,20 +4,18 @@ import './view-mode.css';
 type Mode = 'lines' | 'tiles';
 
 class ViewMode extends Component {
-    lines: HTMLElement;
-    tiles: HTMLElement;
+    lines: HTMLButtonElement;
+    tiles: HTMLButtonElement;
     mode: Mode;
     constructor(tagName: string, className: string) {
         super(tagName, className);
 
-        this.lines = document.createElement('p');
+        this.lines = document.createElement('button');
         this.lines.className = 'view active';
-        //this.lines.innerText = ' ▤☰ ';
         this.lines.innerText = '▤';
 
-        this.tiles = document.createElement('p');
+        this.tiles = document.createElement('button');
         this.tiles.className = 'view';
-        // this.tiles.innerText = ' ▦☷ ';
         this.tiles.innerText = '▦';
 
         this.mode = 'lines';
