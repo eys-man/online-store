@@ -12,6 +12,8 @@ class MainPage extends Page {
         MainTitle: 'Main Page',
     };
 
+    static gallery: Gallery;
+
     constructor(id: string) {
         super(id);
         this.container.className = 'main-page';
@@ -44,8 +46,9 @@ class MainPage extends Page {
         const headerGallery = new HeaderGallery('div', 'header-gallery');
         section.append(headerGallery.render());
 
-        const gallery = new Gallery('div', 'gallery');
-        section.append(gallery.render());
+        //const gallery = new Gallery('div', 'gallery');
+        MainPage.gallery = new Gallery('div', 'gallery');
+        section.append(MainPage.gallery.render());
 
         this.container.append(section);
 

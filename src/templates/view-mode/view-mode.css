@@ -14,5 +14,6 @@
 }
 
 .active {
-    background-color: blueviolet;
+    background-color: rosybrown;
+    /* border-color: red; */
 }

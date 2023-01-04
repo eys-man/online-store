@@ -1,4 +1,4 @@
-import CardSquare from '../card-square/card-square';
+import Card from '../card/card';
 import Component from '../components';
 import Data from '../data';
 import './gallery.css';
@@ -9,11 +9,17 @@ class Gallery extends Component {
     }
 
     render() {
-        Data.products.forEach((x) => {
-            const card = new CardSquare('div', 'card-square', x);
+        if (Data.filteredProducts.length === 0) {
+            this.container.innerHTML = `Sorry, there are no products matching your search`;
+        } else {
+            this.container.innerHTML = '';
+            // Data.products.forEach((x) => {
+            Data.filteredProducts.forEach((x) => {
+                const card = new Card('div', 'card', x);
 
-            this.container.append(card.render());
-        });
+                this.container.append(card.render());
+            });
+        }
 
         return this.container;
     }

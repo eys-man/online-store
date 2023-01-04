@@ -22,68 +22,9 @@
             <section class="gallery">
 
             </section> -->
-        <!-- <div class="range_container">
-            <div class="sliders_control">
-                <input id="fromSlider" type="range" value="0" min="0" max="100" />
-                <input id="toSlider" type="range" value="100" min="0" max="100" />
-            </div>
-            <div class="form_indicators">
-                <p id="from-p">0</p>
-                <p id="to-p">100</p>
-            </div>
-        </div> -->
-
     </main>
 
     <!-- <script>
-        function controlFromSlider(fromSlider, toSlider) {
-            const [from, to] = getParsed(fromSlider, toSlider);
-            const p = document.getElementById('from-p');
-
-            if (from > to) {
-                fromSlider.value = to;
-                p.innerText = `${to}`;
-            } else {
-                p.innerText = `${from}`;
-            }
-        }
-
-        function controlToSlider(fromSlider, toSlider) {
-            const [from, to] = getParsed(fromSlider, toSlider);
-            const p = document.getElementById('to-p');
-
-            setToggleAccessible(toSlider);
-            if (from <= to) {
-                toSlider.value = to;
-                p.innerText = `${to}`;
-            } else {
-                p.innerText = `${from}`;
-                toSlider.value = from;
-            }
-        }
-
-        function getParsed(currentFrom, currentTo) {
-            const from = parseInt(currentFrom.value, 10);
-            const to = parseInt(currentTo.value, 10);
-            return [from, to];
-        }
-
-        function setToggleAccessible(currentTarget) {
-            const toSlider = document.querySelector('#toSlider');
-            if (Number(currentTarget.value) <= 0) {
-                toSlider.style.zIndex = 2;
-            } else {
-                toSlider.style.zIndex = 0;
-            }
-        }
-
-        const fromSlider = document.querySelector('#fromSlider');
-        const toSlider = document.querySelector('#toSlider');
-
-        setToggleAccessible(toSlider);
-
-        fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider);
-        toSlider.oninput = () => controlToSlider(fromSlider, toSlider);
 
     </script> -->
 

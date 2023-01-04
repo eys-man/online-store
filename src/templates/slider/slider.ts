@@ -1,5 +1,6 @@
 import Component from '../components';
-//import Data from '../data';
+import Data from '../data';
+import MainPage from '../../pages/main';
 import './slider.css';
 
 type MinMax = {
@@ -56,12 +57,14 @@ class Slider extends Component {
             this.rangeFiltered.min = from; // -------------------------
             this.pFrom.innerText = `${this.rangeFiltered.min}`;
         }
+        Data.makeFilteredArray();
+        MainPage.gallery.render();
     }
 
     controlToSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement) {
         const [from, to] = this.getParsed(fromSlider, toSlider);
 
-        this.setToggleAccessible(toSlider);
+        // this.setToggleAccessible(toSlider);
         if (from <= to) {
             toSlider.value = `${to}`;
             this.rangeFiltered.max = to; // ------------------------
@@ -71,6 +74,8 @@ class Slider extends Component {
             this.pTo.innerText = `${this.rangeFiltered.max}`;
             toSlider.value = `${from}`;
         }
+        Data.makeFilteredArray();
+        MainPage.gallery.render();
     }
 
     getParsed(currentFrom: HTMLInputElement, currentTo: HTMLInputElement) {
@@ -79,13 +84,13 @@ class Slider extends Component {
         return [from, to];
     }
 
-    setToggleAccessible(currentTarget: HTMLInputElement) {
-        if (Number(currentTarget.value) <= 0) {
-            this.toSlider.style.zIndex = '2';
-        } else {
-            this.toSlider.style.zIndex = '0';
-        }
-    }
+    // setToggleAccessible(currentTarget: HTMLInputElement) {
+    //     if (Number(currentTarget.value) <= 0) {
+    //         this.toSlider.style.zIndex = '2';
+    //     } else {
+    //         this.toSlider.style.zIndex = '0';
+    //     }
+    // }
 
     render() {
         const p = document.createElement('p');

@@ -1,5 +1,4 @@
 .gallery {
-    /* flex-grow: 1; */
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -8,14 +7,10 @@
     overflow-y: auto;
 }
 
-.card-square {
-    position: relative;
-    width: 340px;
-    height: 340px;
+.card {
     margin: 10px;
     padding: 4px;
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
     border: 1px solid white;
     border-radius: 4px;
@@ -24,30 +19,66 @@
     color: white;
     overflow: hidden;
 }
+
+.tiles {
+    width: 340px;
+    height: 340px;
+    flex-direction: column;
+}
+
+.linear {
+    width: 100%;
+    height: 200px;
+    flex-direction: row;
+}
+
+.wrapper {
+    height: 200px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: center;
+    align-items: center;
+    overflow: hidden;
+}
+
 .title {
     padding: 4px;
     margin: 0;
-    /* z-index: 2; */
-}
-.card-buttons {
-
+    font-size: 12px;
 }
 
-.card-square div {
+.tiles .card-buttons {
+    width: 100%;
+}
+
+.linear .card-buttons {
+    width: 240px;
+    font-size: 24px;
+}
+
+.tiles .info {
     padding: 4px;
     margin: 0;
-    /* z-index: 2; */
+    font-size: 12px;
 }
 
-.card-square div p {
-    padding: 2px;
+.linear .info {
+    width: calc(100% - 460px);
+    padding: 16px;
     margin: 0;
-    /* z-index: 2; */
+    font-size: 24px;
 }
 
-.card-square img {
-    /* position: absolute; */
+.card div p {
+    padding: 0;
+    margin: 0;
+}
+
+.card img {
+    display: block;
     padding: 4px;
-    width: 120px;
-    height: 120px;
+    height: 180px;
+    object-fit: contain;
 }

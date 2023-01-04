@@ -2,6 +2,7 @@ import Component from '../components';
 import CheckBoxLine from '../checkbox/checkbox';
 import Data from '../data';
 import './brand.css';
+import MainPage from '../../pages/main';
 
 class Brand extends Component {
     private id: string;
@@ -41,6 +42,8 @@ class Brand extends Component {
 
                     Data.selectedBrand.add(input.id);
                 }
+                Data.makeFilteredArray();
+                MainPage.gallery.render();
             }
             // alert(target.id);
         });

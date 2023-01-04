@@ -9,7 +9,7 @@ export interface Item {
 }
 
 export interface Product {
-    id: string;
+    id: number;
     title: string;
     description: string;
     price: number;
@@ -31,20 +31,24 @@ export interface Products {
 
 class Data {
     url: string;
+    static viewMode: string;
     static data: Products;
-    public static products: Array<Product> = new Array<Product>();
-    public static category: Set<string> = new Set<string>();
-    public static selectedCategory: Set<string> = new Set<string>(); // множество выбранных категорий
-    public static brand: Set<string> = new Set<string>();
-    public static selectedBrand: Set<string> = new Set<string>(); // множество выбранных брендов
-    public static selectedItems: Set<Item> = new Set<Item>(); // отобранные в корзину товары
-    public static price: MinMax = { min: -1, max: -1 };
-    public static priceFiltered: MinMax = { min: -1, max: -1 };
-    public static stock: MinMax = { min: -1, max: -1 };
-    public static stockFiltered: MinMax = { min: -1, max: -1 };
+    static products: Array<Product> = new Array<Product>(); // массив всех продуктов, полученных из интернета
+    static filteredProducts: Array<Product> = new Array<Product>(); // массив продуктов после фильтрации (отображаемый)
+    static category: Set<string> = new Set<string>(); // множество всех категорий
+    static selectedCategory: Set<string> = new Set<string>(); // множество выбранных категорий в фильтрах
+    static brand: Set<string> = new Set<string>(); // множество всех брэндов
+    static selectedBrand: Set<string> = new Set<string>(); // множество выбранных брендов в фильтрах
+    static selectedItems: Set<Item> = new Set<Item>(); // отобранные в корзину товары
+    static price: MinMax = { min: -1, max: -1 }; // диапазон цен ВСЕХ продуктов
+    static priceFiltered: MinMax = { min: -1, max: -1 }; // диапазон цен мин/макс отфильтрованный
+    static stock: MinMax = { min: -1, max: -1 }; // диапазон количества на складе ВСЕХ продуктов
+    static stockFiltered: MinMax = { min: -1, max: -1 }; // диапазон количества продуктов на складе отфильтрованный
 
     constructor(url: string) {
         this.url = url;
+        // Data.viewMode = 'tiles';
+        Data.viewMode = 'linear';
     }
 
     // число товаров определенной категории
@@ -63,6 +67,23 @@ class Data {
             if (x.brand === str) num += 1;
         });
         return num;
+    }
+
+    static makeFilteredArray() {
+        Data.filteredProducts.length = 0; // очистить массив
+        // пропустить через фильтр
+        Data.products.forEach((x) => {
+            if (
+                Data.selectedCategory.has(x.category) &&
+                Data.selectedBrand.has(x.brand) &&
+                x.price >= Data.priceFiltered.min &&
+                x.price <= Data.priceFiltered.max &&
+                x.stock >= Data.stockFiltered.min &&
+                x.stock <= Data.priceFiltered.max
+            ) {
+                Data.filteredProducts.push(x);
+            }
+        });
     }
 
     async getData() {
@@ -92,8 +113,18 @@ class Data {
 
             Data.stockFiltered.max = Data.stock.max;
             Data.stockFiltered.min = Data.stock.min;
+
+            //Data.filteredProducts
+
+            Data.selectedItems.add({ id: 1, quantity: 5 });
+            Data.selectedItems.add({ id: 7, quantity: 1 });
+            Data.selectedItems.add({ id: 9, quantity: 3 });
+            Data.selectedItems.add({ id: 34, quantity: 1 });
+            Data.selectedItems.add({ id: 87, quantity: 2 });
+
             // TODO: прочитать из localstore min/max price, min/max stock
             // и массив выбранных товаров
+
             // return Data.data;
         } else {
             alert('error ' + response.status);

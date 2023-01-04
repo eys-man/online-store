@@ -1,44 +1,46 @@
+import MainPage from '../../pages/main';
 import Component from '../components';
+import Data from '../data';
+
 import './view-mode.css';
 
-type Mode = 'lines' | 'tiles';
-
 class ViewMode extends Component {
-    lines: HTMLButtonElement;
+    linear: HTMLButtonElement;
     tiles: HTMLButtonElement;
-    mode: Mode;
+
     constructor(tagName: string, className: string) {
         super(tagName, className);
 
-        this.lines = document.createElement('button');
-        this.lines.className = 'view active';
-        this.lines.innerText = '▤';
+        this.linear = document.createElement('button');
+        this.linear.className = 'view';
+        if (Data.viewMode === 'linear') this.linear.classList.add('active');
+        this.linear.textContent = '▤';
 
         this.tiles = document.createElement('button');
         this.tiles.className = 'view';
-        this.tiles.innerText = '▦';
-
-        this.mode = 'lines';
+        if (Data.viewMode === 'tiles') this.tiles.classList.add('active');
+        this.tiles.textContent = '▦';
     }
 
     render() {
-        this.container.append(this.lines);
+        this.container.append(this.linear);
         this.container.append(this.tiles);
 
         this.tiles.addEventListener('click', () => {
-            if (this.mode === 'lines') {
-                this.mode = 'tiles';
-                this.lines.classList.remove('active');
+            if (Data.viewMode === 'linear') {
+                Data.viewMode = 'tiles';
+                this.linear.classList.remove('active');
                 this.tiles.classList.add('active');
+                MainPage.gallery.render();
             }
         });
 
-        this.lines.addEventListener('click', () => {
-            if (this.mode === 'tiles') {
-                this.mode = 'lines';
+        this.linear.addEventListener('click', () => {
+            if (Data.viewMode === 'tiles') {
+                Data.viewMode = 'linear';
                 this.tiles.classList.remove('active');
-                this.lines.classList.add('active');
-                // TODE: обновить в Data режим отображения
+                this.linear.classList.add('active');
+                MainPage.gallery.render();
             }
         });
 
