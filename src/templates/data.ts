@@ -32,6 +32,7 @@ export interface Products {
 class Data {
     url: string;
     static viewMode: string;
+    static sortingMode: string;
     static data: Products;
     static products: Array<Product> = new Array<Product>(); // массив всех продуктов, полученных из интернета
     static filteredProducts: Array<Product> = new Array<Product>(); // массив продуктов после фильтрации (отображаемый)
@@ -47,8 +48,22 @@ class Data {
 
     constructor(url: string) {
         this.url = url;
-        // Data.viewMode = 'tiles';
-        Data.viewMode = 'linear';
+        Data.viewMode = 'tiles'; // по умолчанию вид галереи "плитка"
+        // Data.viewMode = 'linear';
+        Data.sortingMode = 'sort by price ↑'; // по умолчанию сортировка "цена от меньшей"
+        // Data.sortingMode = 'sort by rating ↑';
+    }
+
+    static sort() {
+        if (Data.sortingMode === 'sort by price ↑') {
+            Data.filteredProducts.sort((a, b) => a.price - b.price);
+        } else if (Data.sortingMode === 'sort by price ↓') {
+            Data.filteredProducts.sort((a, b) => b.price - a.price);
+        } else if (Data.sortingMode === 'sort by rating ↑') {
+            Data.filteredProducts.sort((a, b) => a.rating - b.rating);
+        } else if (Data.sortingMode === 'sort by rating ↓') {
+            Data.filteredProducts.sort((a, b) => b.rating - a.rating);
+        }
     }
 
     // число товаров определенной категории
@@ -96,6 +111,10 @@ class Data {
                 Data.category.add(x.category);
                 Data.brand.add(x.brand);
 
+                // по умолчанию выбраны все фильтры категории и брэнды
+                Data.selectedCategory.add(x.category);
+                Data.selectedBrand.add(x.brand);
+
                 // найти в каталоге минимальную и макс. цены
                 if (Data.price.min === -1) Data.price.min = x.price;
                 if (Data.price.max === -1) Data.price.max = x.price;
@@ -108,22 +127,27 @@ class Data {
                 if (Data.stock.max < x.price) Data.stock.max = x.stock;
             });
 
+            // по умолчанию ползунки слайдеров в мин. и макс. положениях
             Data.priceFiltered.max = Data.price.max;
             Data.priceFiltered.min = Data.price.min;
 
             Data.stockFiltered.max = Data.stock.max;
             Data.stockFiltered.min = Data.stock.min;
 
-            //Data.filteredProducts
+            // отсортировать отфильтрованный массив режимом сортировки по умолчанию
+            Data.makeFilteredArray();
+            Data.sort();
 
+            // TODO: прочитать из localstore min/max price, min/max stock,
+            // фильтры по брендам и категориям
+            // и массив выбранных в корзину товаров
+
+            // вручную добавленные в корзину элементы
             Data.selectedItems.add({ id: 1, quantity: 5 });
             Data.selectedItems.add({ id: 7, quantity: 1 });
             Data.selectedItems.add({ id: 9, quantity: 3 });
             Data.selectedItems.add({ id: 34, quantity: 1 });
             Data.selectedItems.add({ id: 87, quantity: 2 });
-
-            // TODO: прочитать из localstore min/max price, min/max stock
-            // и массив выбранных товаров
 
             // return Data.data;
         } else {

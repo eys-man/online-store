@@ -53,8 +53,10 @@ class App {
     }
 
     async run() {
-        const a = new Data('https://dummyjson.com/products?limit=100');
+        const a = new Data('https://dummyjson.com/products?limit=50');
         await a.getData();
+        // Data.makeFilteredArray();
+        // Data.sort();
 
         document.body.prepend(this.header.render());
         App.renderNewPage('main-page');

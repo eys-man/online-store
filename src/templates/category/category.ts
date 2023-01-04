@@ -22,7 +22,8 @@ class Category extends Component {
 
         // alert('число категорий = ' + Data.category.size);
         Data.category.forEach((item) => {
-            const check = new CheckBoxLine('div', 'checkbox-line', item, Data.getQuantityCat(item));
+            const check = new CheckBoxLine('div', 'checkbox-line', item, false, Data.getQuantityCat(item));
+            if (Data.selectedCategory.has(item)) check.checked = true;
             filterList.append(check.render());
         });
 
@@ -31,7 +32,7 @@ class Category extends Component {
         this.container.addEventListener('click', (event: Event) => {
             let target = (event.target as HTMLElement).closest('div') as HTMLElement;
             if (Data.category.has(target.id)) {
-                event.preventDefault(); // убрать браузерный авто-чек
+                //event.preventDefault(); // убрать браузерный авто-чек
                 let input = target.querySelector('input') as HTMLInputElement;
                 if (input.checked === true) {
                     input.checked = false;

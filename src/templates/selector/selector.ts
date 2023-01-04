@@ -1,12 +1,13 @@
+import MainPage from '../../pages/main';
 import Component from '../components';
+import Data from '../data';
 import './selector.css';
 
 class Selector extends Component {
     options = ['sort by price ↑', 'sort by price ↓', 'sort by rating ↑', 'sort by rating ↓'];
-    sortingMode: string;
+
     constructor(tagName: string, className: string) {
         super(tagName, className);
-        this.sortingMode = this.options[0];
 
         this.options.forEach((x) => {
             const opt = document.createElement('option');
@@ -14,17 +15,17 @@ class Selector extends Component {
             opt.text = x;
             this.container.append(opt);
         });
+
+        (this.container as HTMLSelectElement).value = Data.sortingMode;
     }
 
     render() {
-        // this.container.append(this.selector);
-
         this.container.addEventListener('change', () => {
-            if (this.sortingMode !== (this.container as HTMLSelectElement).value) {
-                this.sortingMode = (this.container as HTMLSelectElement).value;
-                alert('выбрана сортировка ' + this.sortingMode);
-
-                // TODO: отсортировать массив товаров для вывода
+            if (Data.sortingMode !== (this.container as HTMLSelectElement).value) {
+                Data.sortingMode = (this.container as HTMLSelectElement).value;
+                // отсортировать массив товаров для вывода
+                Data.sort();
+                MainPage.gallery.render();
             }
         });
 
