@@ -1,4 +1,5 @@
 import Component from '../components';
+import Data from '../data';
 import './found.css';
 
 class Found extends Component {
@@ -18,7 +19,8 @@ class Found extends Component {
     }
 
     render() {
-        this.container.innerHTML = `Found: ${this.#found}`;
+        // this.container.innerHTML = `Found: ${this.#found}`;
+        this.container.innerHTML = `Found: ${Data.filteredProducts.length}`;
 
         return this.container;
     }

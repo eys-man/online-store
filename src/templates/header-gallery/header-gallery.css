@@ -8,3 +8,8 @@
     justify-content: space-around;
     align-items: center;
 }
+
+.found {
+    width: 120px;
+    color: white;
+}

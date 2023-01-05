@@ -13,7 +13,6 @@ class Gallery extends Component {
             this.container.innerHTML = `Sorry, there are no products matching your search`;
         } else {
             this.container.innerHTML = '';
-            // Data.products.forEach((x) => {
             Data.filteredProducts.forEach((x) => {
                 const card = new Card('div', 'card', x);
 

@@ -1,4 +1,9 @@
+// import Brand from '../brand/brand';
+// import Category from '../category/category';
+import MainPage from '../../pages/main';
 import Component from '../components';
+import Data from '../data';
+// import Slider from '../slider/slider';
 import './header-filters.css';
 
 class HeaderFilters extends Component {
@@ -17,13 +22,21 @@ class HeaderFilters extends Component {
         this.container.append(copyLink);
 
         this.container.addEventListener('click', (event) => {
-            let target = (event.target as HTMLButtonElement).closest('button');
+            const target = event.target;
+            if (target instanceof HTMLButtonElement) {
+                if (target?.innerText === 'Reset filters') {
+                    Data.reset();
+                    Data.makeFilteredArray();
+                    Data.sort();
+                    MainPage.gallery.render();
 
-            if (target?.innerText === 'Reset filters') {
-                alert('Reset filters');
-                // TODO:
-            } else if (target?.innerText === 'Copy link') {
-                alert('Copy link');
+                    const aside = document.querySelector('.filters') as HTMLElement;
+                    aside.innerHTML = '';
+                    MainPage.renderFilters(aside);
+                } else if (target?.innerText === 'Copy link') {
+                    alert('Copy link');
+                    // TODO: скопировать URL страницы в буфер обмена
+                }
             }
         });
 

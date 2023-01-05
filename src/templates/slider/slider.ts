@@ -2,6 +2,8 @@ import Component from '../components';
 import Data from '../data';
 import MainPage from '../../pages/main';
 import './slider.css';
+import Category from '../category/category';
+import Brand from '../brand/brand';
 
 type MinMax = {
     min: number;
@@ -41,41 +43,73 @@ class Slider extends Component {
         this.toSlider.value = `${rangeFiltered.max}`;
 
         this.pFrom = document.createElement('div'); // индикатор величины "от"
-        this.pFrom.innerText = `${rangeFiltered.min}`;
+        this.pFrom.innerText = `${rangeFiltered.min}/${range.min}`;
         this.pTo = document.createElement('div'); // индикатор величины "до"
-        this.pTo.innerText = `${rangeFiltered.max}`;
+        this.pTo.innerText = `${rangeFiltered.max}/${range.max}`;
     }
 
     controlFromSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement) {
         const [from, to] = this.getParsed(fromSlider, toSlider);
-
         if (from > to) {
             fromSlider.value = `${to}`;
             this.rangeFiltered.min = to; // -------------------------
-            this.pFrom.innerText = `${this.rangeFiltered.min}`;
+            this.pFrom.innerText = `${this.rangeFiltered.min}/${this.range.min}`;
         } else {
             this.rangeFiltered.min = from; // -------------------------
-            this.pFrom.innerText = `${this.rangeFiltered.min}`;
+            this.pFrom.innerText = `${this.rangeFiltered.min}/${this.range.min}`;
         }
+
+        // TODO: это засунуть в функцию (updateOtherFilters - типа такого названия)
         Data.makeFilteredArray();
+        Data.sort();
         MainPage.gallery.render();
+
+        // обновить фильтры category и brand
+        let category = document.querySelector('.category') as HTMLElement;
+        const categoryFilter = new Category('div', 'category', 'category');
+        category.replaceWith(categoryFilter.render());
+
+        let brand = document.querySelector('.brand') as HTMLElement;
+        const brandFilter = new Brand('div', 'brand', 'brand');
+        brand.replaceWith(brandFilter.render());
+
+        // TODO: пересчитать фильтры stock/price и обновить слайдеры
+
+        const found = document.querySelector('.found') as HTMLElement;
+        found.innerHTML = `Found: ${Data.filteredProducts.length}`;
     }
 
     controlToSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement) {
         const [from, to] = this.getParsed(fromSlider, toSlider);
-
         // this.setToggleAccessible(toSlider);
         if (from <= to) {
             toSlider.value = `${to}`;
             this.rangeFiltered.max = to; // ------------------------
-            this.pTo.innerText = `${this.rangeFiltered.max}`;
+            this.pTo.innerText = `${this.rangeFiltered.max}/${this.range.max}`;
         } else {
             this.rangeFiltered.max = from; // ------------------------
-            this.pTo.innerText = `${this.rangeFiltered.max}`;
+            this.pTo.innerText = `${this.rangeFiltered.max}/${this.range.max}`;
             toSlider.value = `${from}`;
         }
+
+        // TODO: это засунуть в функцию (updateOtherFilters - типа такого названия)
         Data.makeFilteredArray();
+        Data.sort();
         MainPage.gallery.render();
+
+        // обновить фильтры category, brand
+        let category = document.querySelector('.category') as HTMLElement;
+        const categoryFilter = new Category('div', 'category', 'category');
+        category.replaceWith(categoryFilter.render());
+
+        let brand = document.querySelector('.brand') as HTMLElement;
+        const brandFilter = new Brand('div', 'brand', 'brand');
+        brand.replaceWith(brandFilter.render());
+
+        // TODO: пересчитать фильтры stock/price и обновить слайдеры
+
+        const found = document.querySelector('.found') as HTMLElement;
+        found.innerHTML = `Found: ${Data.filteredProducts.length}`;
     }
 
     getParsed(currentFrom: HTMLInputElement, currentTo: HTMLInputElement) {

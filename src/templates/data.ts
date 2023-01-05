@@ -56,17 +56,17 @@ class Data {
 
     static sort() {
         if (Data.sortingMode === 'sort by price ↑') {
-            Data.filteredProducts.sort((a, b) => a.price - b.price);
+            Data.filteredProducts.sort((a, b) => Number(a.price) - Number(b.price));
         } else if (Data.sortingMode === 'sort by price ↓') {
-            Data.filteredProducts.sort((a, b) => b.price - a.price);
+            Data.filteredProducts.sort((a, b) => Number(b.price) - Number(a.price));
         } else if (Data.sortingMode === 'sort by rating ↑') {
-            Data.filteredProducts.sort((a, b) => a.rating - b.rating);
+            Data.filteredProducts.sort((a, b) => Number(a.rating) - Number(b.rating));
         } else if (Data.sortingMode === 'sort by rating ↓') {
-            Data.filteredProducts.sort((a, b) => b.rating - a.rating);
+            Data.filteredProducts.sort((a, b) => Number(b.rating) - Number(a.rating));
         }
     }
 
-    // число товаров определенной категории
+    // число всех товаров определенной категории
     static getQuantityCat(str: string): number {
         let num: number = 0;
         Data.products.forEach((x) => {
@@ -75,7 +75,16 @@ class Data {
         return num;
     }
 
-    // число товаров определенного бренда
+    // число отфильтрованных товаров определенной категории
+    static getQuantityCatFiltered(str: string): number {
+        let num: number = 0;
+        Data.filteredProducts.forEach((x) => {
+            if (x.category === str) num += 1;
+        });
+        return num;
+    }
+
+    // число всех товаров определенного бренда
     static getQuantityBrand(str: string): number {
         let num: number = 0;
         Data.products.forEach((x) => {
@@ -84,8 +93,18 @@ class Data {
         return num;
     }
 
+    // число отфильтрованных товаров определенного бренда
+    static getQuantityBrandFiltered(str: string): number {
+        let num: number = 0;
+        Data.filteredProducts.forEach((x) => {
+            if (x.brand === str) num += 1;
+        });
+        return num;
+    }
+
+    // создать массив товаров согласно фильтрации
     static makeFilteredArray() {
-        Data.filteredProducts.length = 0; // очистить массив
+        Data.filteredProducts = []; // очистить массив
         // пропустить через фильтр
         Data.products.forEach((x) => {
             if (
@@ -94,11 +113,21 @@ class Data {
                 x.price >= Data.priceFiltered.min &&
                 x.price <= Data.priceFiltered.max &&
                 x.stock >= Data.stockFiltered.min &&
-                x.stock <= Data.priceFiltered.max
+                x.stock <= Data.stockFiltered.max
             ) {
                 Data.filteredProducts.push(x);
             }
         });
+    }
+
+    // сброс фильтров в «невыбранные»
+    static reset() {
+        Data.selectedCategory.clear();
+        Data.selectedBrand.clear();
+        Data.priceFiltered.max = Data.price.max;
+        Data.priceFiltered.min = Data.price.min;
+        Data.stockFiltered.max = Data.stock.max;
+        Data.stockFiltered.min = Data.stock.min;
     }
 
     async getData() {
@@ -123,8 +152,8 @@ class Data {
                 // найти в каталоге минимальные и макс. кол-ва товаров на складе
                 if (Data.stock.min === -1) Data.stock.min = x.stock;
                 if (Data.stock.max === -1) Data.stock.max = x.stock;
-                if (Data.stock.min > x.price) Data.stock.min = x.stock;
-                if (Data.stock.max < x.price) Data.stock.max = x.stock;
+                if (Data.stock.min > x.stock) Data.stock.min = x.stock;
+                if (Data.stock.max < x.stock) Data.stock.max = x.stock;
             });
 
             // по умолчанию ползунки слайдеров в мин. и макс. положениях

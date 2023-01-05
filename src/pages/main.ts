@@ -19,24 +19,28 @@ class MainPage extends Page {
         this.container.className = 'main-page';
     }
 
+    static renderFilters(container: HTMLElement) {
+        const headerFilters = new HeaderFilters('div', 'header-links');
+        container.append(headerFilters.render());
+
+        const categoryFilter = new Category('div', 'category', 'category');
+        container.append(categoryFilter.render());
+
+        const brandFilter = new Brand('div', 'brand', 'brand');
+        container.append(brandFilter.render());
+
+        const priceFilter = new Slider('div', 'price', 'price', Data.price, Data.priceFiltered);
+        container.append(priceFilter.render());
+
+        const stockFilter = new Slider('div', 'stock', 'stock', Data.stock, Data.stockFiltered);
+        container.append(stockFilter.render());
+    }
+
     render() {
         const aside = document.createElement('aside');
         aside.className = 'filters';
 
-        const headerFilters = new HeaderFilters('div', 'header-links');
-        aside.append(headerFilters.render());
-
-        const categoryFilter = new Category('div', 'category', 'category');
-        aside.append(categoryFilter.render());
-
-        const brandFilter = new Brand('div', 'brand', 'brand');
-        aside.append(brandFilter.render());
-
-        const priceFilter = new Slider('div', 'price', 'price', Data.price, Data.priceFiltered);
-        aside.append(priceFilter.render());
-
-        const stockFilter = new Slider('div', 'stock', 'stock', Data.stock, Data.stockFiltered);
-        aside.append(stockFilter.render());
+        MainPage.renderFilters(aside);
 
         this.container.append(aside);
 

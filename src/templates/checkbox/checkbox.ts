@@ -3,11 +3,13 @@ import Component from '../components';
 class CheckBoxLine extends Component {
     private id: string; // название категории/брэнда, он же - id элемента
     private num: number; // число вхождений элемента в список
+    private numFiltered: number; // число вхождений элемента в список
     checked: boolean;
-    constructor(tagName: string, className: string, id: string, checked: boolean, num: number) {
+    constructor(tagName: string, className: string, id: string, checked: boolean, num: number, numFiltered: number) {
         super(tagName, className);
         this.id = id;
         this.num = num;
+        this.numFiltered = numFiltered;
         this.checked = checked;
     }
 
@@ -24,7 +26,7 @@ class CheckBoxLine extends Component {
         this.container.append(label);
 
         const span = document.createElement('span');
-        span.innerText = ` - (${this.num})`;
+        span.innerText = ` - (${this.numFiltered}/${this.num})`;
         this.container.append(span);
 
         this.container.id = this.id;
