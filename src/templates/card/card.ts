@@ -1,5 +1,6 @@
 import Component from '../components';
 import Data, { Product } from '../data';
+import Header from '../header/header';
 
 class Card extends Component {
     // private id: string; // название категории/брэнда, он же - id элемента
@@ -37,15 +38,15 @@ class Card extends Component {
         info.innerHTML = str;
         this.container.append(info);
 
-        const buttons = document.createElement('button');
-        buttons.className = 'card-buttons';
-        buttons.textContent = 'Add to cart';
+        const button = document.createElement('button');
+        button.className = 'card-buttons';
+        button.textContent = 'Add to cart';
         // this.item.id проверить, есть ли во множестве отобранных
         Data.selectedItems.forEach((x) => {
-            if (x.id === this.item.id) buttons.textContent = 'Remove from cart';
+            if (x.id === this.item.id) button.textContent = 'Remove from cart';
         });
 
-        this.container.append(buttons);
+        this.container.append(button);
 
         if (Data.viewMode === 'tiles') {
             this.container.classList.remove('linear');
@@ -54,6 +55,20 @@ class Card extends Component {
             this.container.classList.remove('tiles');
             this.container.classList.add('linear');
         }
+
+        button.addEventListener('click', () => {
+            if (button.textContent === 'Add to cart') {
+                Data.selectedItems.add({ id: this.item.id, quantity: 1 });
+                button.textContent = 'Remove from cart';
+                Header.update();
+            } else {
+                Data.selectedItems.forEach((x) => {
+                    if (x.id === this.item.id) Data.selectedItems.delete(x);
+                });
+                button.textContent = 'Add to cart';
+                Header.update();
+            }
+        });
 
         return this.container;
     }
