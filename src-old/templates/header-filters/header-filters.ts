@@ -3,7 +3,6 @@
 import MainPage from '../../pages/main';
 import Component from '../components';
 import Data from '../data';
-// import Header from '../header/header';
 // import Slider from '../slider/slider';
 import './header-filters.css';
 
@@ -34,13 +33,6 @@ class HeaderFilters extends Component {
                     const aside = document.querySelector('.filters') as HTMLElement;
                     aside.innerHTML = '';
                     MainPage.renderFilters(aside);
-
-                    const found = document.body.querySelector('.found') as HTMLElement;
-                    found.innerHTML = `Found: ${Data.filteredProducts.length}`;
-
-                    const search = document.body.querySelector('.search') as HTMLElement;
-                    (search.querySelector('input') as HTMLInputElement).value = '';
-                    // Header.update();
                 } else if (target?.innerText === 'Copy link') {
                     alert('Copy link');
                     // TODO: скопировать URL страницы в буфер обмена

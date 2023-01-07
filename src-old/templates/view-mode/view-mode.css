@@ -1,0 +1,19 @@
+.view-mode {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.view {
+    font-size: 24px;
+    padding: 0 6px;
+    margin: 0;
+}
+
+.active {
+    background-color: rosybrown;
+    /* border-color: red; */
+}

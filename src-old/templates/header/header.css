@@ -8,7 +8,6 @@
 }
 
 .link-header {
-    position: relative;
     /* display: flex;
     flex-direction: row;
     align-items: center; */
@@ -16,22 +15,4 @@
     height: 100%;
     /* background-image: url('../../img/cart.png'); */
     background-color: transparent;
-}
-
-.cart {
-    height: 64px;
-}
-
-.quantity {
-    background-color: transparent;
-    font-size: 24px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    /* border: 1px solid white;
-    border-radius: 50%; */
-    margin: 0;
-    padding: 0;
 }

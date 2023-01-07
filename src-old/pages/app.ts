@@ -55,7 +55,8 @@ class App {
     async run() {
         const a = new Data('https://dummyjson.com/products?limit=100');
         await a.getData();
-        Header.update();
+        // Data.makeFilteredArray();
+        // Data.sort();
 
         document.body.prepend(this.header.render());
         App.renderNewPage('main-page');

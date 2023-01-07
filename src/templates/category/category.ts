@@ -5,6 +5,7 @@ import './category.css';
 import MainPage from '../../pages/main';
 import Brand from '../brand/brand';
 import Slider from '../slider/slider';
+import Header from '../header/header';
 
 class Category extends Component {
     private id: string;
@@ -39,7 +40,7 @@ class Category extends Component {
 
         this.container.append(filterList);
 
-        this.container.addEventListener('click', (event) => {
+        this.container.addEventListener('click', async (event) => {
             const target = event?.target;
             // const aside = document.querySelector('.filters') as HTMLElement;
             if (target instanceof HTMLInputElement) {
@@ -48,26 +49,7 @@ class Category extends Component {
                 } else {
                     Data.selectedCategory.delete(target.id);
                 }
-
-                // TODO: всё это засунуть в функцию (updateOtherFilters - типа такого названия)
-                Data.makeFilteredArray();
-                Data.sort();
-                MainPage.gallery.render();
-
-                // TODO: пересчитать диапазоны для слайдеров
-
-                // изменить фильтры brand и слайдеры
-                let brand = document.querySelector('.brand') as HTMLElement;
-                const brandFilter = new Brand('div', 'brand', 'brand');
-                brand.replaceWith(brandFilter.render());
-
-                let price = document.querySelector('.price') as HTMLElement;
-                const priceFilter = new Slider('div', 'price', 'price', Data.price, Data.priceFiltered);
-                price.replaceWith(priceFilter.render());
-
-                let stock = document.querySelector('.stock') as HTMLElement;
-                const stockFilter = new Slider('div', 'stock', 'stock', Data.stock, Data.stockFiltered);
-                stock.replaceWith(stockFilter.render());
+                await this.updateFilters();
             } else if (target instanceof HTMLDivElement) {
                 let input = target.querySelector('input') as HTMLInputElement;
                 if (input.checked === true) {
@@ -79,24 +61,7 @@ class Category extends Component {
 
                     Data.selectedCategory.add(input.id);
                 }
-
-                // TODO: всё это засунуть в функцию (updateOtherFilters - типа такого названия)
-                Data.makeFilteredArray();
-                Data.sort();
-                MainPage.gallery.render();
-
-                // изменить фильтры brand и слайдеры
-                let brand = document.querySelector('.brand') as HTMLElement;
-                const brandFilter = new Brand('div', 'brand', 'brand');
-                brand.replaceWith(brandFilter.render());
-
-                let price = document.querySelector('.price') as HTMLElement;
-                const priceFilter = new Slider('div', 'price', 'price', Data.price, Data.priceFiltered);
-                price.replaceWith(priceFilter.render());
-
-                let stock = document.querySelector('.stock') as HTMLElement;
-                const stockFilter = new Slider('div', 'stock', 'stock', Data.stock, Data.stockFiltered);
-                stock.replaceWith(stockFilter.render());
+                await this.updateFilters();
             } else if (target instanceof HTMLSpanElement || target instanceof HTMLLabelElement) {
                 let parent = target.parentElement as HTMLDivElement;
                 let input = parent.querySelector('input') as HTMLInputElement;
@@ -111,32 +76,69 @@ class Category extends Component {
                     Data.selectedCategory.add(input.id);
                 }
 
-                // TODO: всё это засунуть в функцию (updateOtherFilters - типа такого названия)
-                Data.makeFilteredArray();
-                Data.sort();
-                MainPage.gallery.render();
-
-                // TODO: пересчитать диапазоны для слайдеров
-
-                // изменить фильтры brand и слайдеры
-                let brand = document.querySelector('.brand') as HTMLElement;
-                const brandFilter = new Brand('div', 'brand', 'brand');
-                brand.replaceWith(brandFilter.render());
-
-                let price = document.querySelector('.price') as HTMLElement;
-                const priceFilter = new Slider('div', 'price', 'price', Data.price, Data.priceFiltered);
-                price.replaceWith(priceFilter.render());
-
-                let stock = document.querySelector('.stock') as HTMLElement;
-                const stockFilter = new Slider('div', 'stock', 'stock', Data.stock, Data.stockFiltered);
-                stock.replaceWith(stockFilter.render());
+                await this.updateFilters();
             }
-            // TODO: это тоже засунуть в функцию (updateOtherFilters - типа такого названия)
-            const found = document.body.querySelector('.found') as HTMLElement;
-            found.innerHTML = `Found: ${Data.filteredProducts.length}`;
         });
 
         return this.container;
+    }
+
+    async updateFilters() {
+        // TODO: всё это засунуть в функцию (updateFilters - типа такого названия)
+        // Data.makeFilteredArray();
+        // Data.sort();
+        // MainPage.gallery.render();
+
+        // пересчитать диапазоны для слайдеров
+
+        // исправляю: некорректное присваивание
+        Data.priceFiltered.max = Data.price.min;
+        Data.priceFiltered.min = Data.price.max;
+        // Data.priceFiltered.max = Data.price.max;
+        // Data.priceFiltered.min = Data.price.min;
+        Data.filteredProducts.forEach((x) => {
+            if (Data.priceFiltered.min > x.price) Data.priceFiltered.min = x.price;
+            if (Data.priceFiltered.max < x.price) Data.priceFiltered.max = x.price;
+
+            if (Data.stockFiltered.min > x.stock) Data.stockFiltered.min = x.stock;
+            if (Data.stockFiltered.max < x.stock) Data.stockFiltered.max = x.stock;
+        });
+        // alert(
+        //     'price ' +
+        //         Data.priceFiltered.min +
+        //         '/' +
+        //         Data.priceFiltered.max +
+        //         ', stock ' +
+        //         Data.stockFiltered.min +
+        //         '/' +
+        //         Data.stockFiltered.max
+        // );
+
+        await Data.makeFilteredArray();
+        Data.sort();
+        MainPage.gallery.render();
+
+        // изменить фильтры brand и слайдеры
+        let category = document.querySelector('.category') as HTMLElement;
+        const categoryFilter = new Category('div', 'category', 'category');
+        category.replaceWith(categoryFilter.render());
+
+        let brand = document.querySelector('.brand') as HTMLElement;
+        const brandFilter = new Brand('div', 'brand', 'brand');
+        brand.replaceWith(brandFilter.render());
+
+        let price = document.querySelector('.price') as HTMLElement;
+        const priceFilter = new Slider('div', 'price', 'price', Data.price, Data.priceFiltered);
+        price.replaceWith(priceFilter.render());
+
+        let stock = document.querySelector('.stock') as HTMLElement;
+        const stockFilter = new Slider('div', 'stock', 'stock', Data.stock, Data.stockFiltered);
+        stock.replaceWith(stockFilter.render());
+
+        const found = document.body.querySelector('.found') as HTMLElement;
+        found.innerHTML = `Found: ${Data.filteredProducts.length}`;
+
+        await Header.update();
     }
 }
 

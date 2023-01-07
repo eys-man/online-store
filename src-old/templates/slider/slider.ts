@@ -65,24 +65,15 @@ class Slider extends Component {
         MainPage.gallery.render();
 
         // обновить фильтры category и brand
-        const category = document.querySelector('.category') as HTMLElement;
+        let category = document.querySelector('.category') as HTMLElement;
         const categoryFilter = new Category('div', 'category', 'category');
         category.replaceWith(categoryFilter.render());
 
-        const brand = document.querySelector('.brand') as HTMLElement;
+        let brand = document.querySelector('.brand') as HTMLElement;
         const brandFilter = new Brand('div', 'brand', 'brand');
         brand.replaceWith(brandFilter.render());
 
         // TODO: пересчитать фильтры stock/price и обновить слайдеры
-        if (this.title === 'stock') {
-            const price = document.querySelector('.price') as HTMLElement;
-            const priceFilter = new Slider('div', 'price', 'price', Data.price, Data.priceFiltered);
-            price.replaceWith(priceFilter.render());
-        } else if (this.title === 'price') {
-            const stock = document.querySelector('.stock') as HTMLElement;
-            const stockFilter = new Slider('div', 'stock', 'stock', Data.stock, Data.stockFiltered);
-            stock.replaceWith(stockFilter.render());
-        }
 
         const found = document.querySelector('.found') as HTMLElement;
         found.innerHTML = `Found: ${Data.filteredProducts.length}`;
@@ -116,15 +107,6 @@ class Slider extends Component {
         brand.replaceWith(brandFilter.render());
 
         // TODO: пересчитать фильтры stock/price и обновить слайдеры
-        if (this.title === 'stock') {
-            const price = document.querySelector('.price') as HTMLElement;
-            const priceFilter = new Slider('div', 'price', 'price', Data.price, Data.priceFiltered);
-            price.replaceWith(priceFilter.render());
-        } else if (this.title === 'price') {
-            const stock = document.querySelector('.stock') as HTMLElement;
-            const stockFilter = new Slider('div', 'stock', 'stock', Data.stock, Data.stockFiltered);
-            stock.replaceWith(stockFilter.render());
-        }
 
         const found = document.querySelector('.found') as HTMLElement;
         found.innerHTML = `Found: ${Data.filteredProducts.length}`;

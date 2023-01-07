@@ -1,0 +1,19 @@
+.filter-list {
+    flex-grow: 1;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.p {
+    background-color: rgb(185, 236, 206);
+    margin: 4px;
+}
+
+.checkbox-line {
+    margin: 2px;
+    background-color: aquamarine;
+}
+
+.checkbox-line:hover {
+    background-color: rgb(95, 213, 174);
+    /* cursor: pointer; */
+}
