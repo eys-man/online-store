@@ -1,0 +1,15 @@
+.header-gallery {
+    box-sizing: border-box;
+    /* padding: 4px; */
+    /* height: 40px; */
+    min-height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.found {
+    width: 120px;
+    color: white;
+}

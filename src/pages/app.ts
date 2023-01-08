@@ -3,9 +3,10 @@ import Page from '../templates/page';
 import MainPage from './main';
 import ProductPage from './product';
 import CartPage from './cart';
-import Header from '../templates/header';
-import Footer from '../templates/footer';
+import Header from '../templates/header/header';
+import Footer from '../templates/footer/footer';
 import ErrorPage, { ErrorTypes } from './error';
+import Data from '../templates/data';
 
 export const enum PageIds {
     MainPage = 'main-page',
@@ -51,11 +52,14 @@ class App {
         this.footer = new Footer('footer', 'footer');
     }
 
-    run() {
+    async run() {
+        const a = new Data('https://dummyjson.com/products?limit=100');
+        await a.getData();
+        Header.update();
+
         document.body.prepend(this.header.render());
         App.renderNewPage('main-page');
         document.body.append(this.footer.render());
-        // App.container.append(this.footer.render());
         this.enableRouteChange();
     }
 }
