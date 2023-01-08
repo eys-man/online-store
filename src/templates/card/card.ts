@@ -56,17 +56,27 @@ class Card extends Component {
             this.container.classList.add('linear');
         }
 
-        button.addEventListener('click', () => {
-            if (button.textContent === 'Add to cart') {
-                Data.selectedItems.add({ id: this.item.id, quantity: 1 });
-                button.textContent = 'Remove from cart';
-                Header.update();
+        this.container.addEventListener('click', ({ target }) => {
+            if (target === button) {
+                if (button.textContent === 'Add to cart') {
+                    Data.selectedItems.add({ id: this.item.id, quantity: 1 });
+                    button.textContent = 'Remove from cart';
+                    Header.update();
+                } else {
+                    Data.selectedItems.forEach((x) => {
+                        if (x.id === this.item.id) Data.selectedItems.delete(x);
+                    });
+                    button.textContent = 'Add to cart';
+                    Header.update();
+                }
             } else {
-                Data.selectedItems.forEach((x) => {
-                    if (x.id === this.item.id) Data.selectedItems.delete(x);
-                });
-                button.textContent = 'Add to cart';
-                Header.update();
+                // alert('надо открывать карту товара');
+                const url = new URL(window.location.href);
+                //window.history.pushState(null, '', url);
+
+                url.searchParams.set('id', `${this.item.id}`);
+                window.history.replaceState(null, '', url);
+                window.location.hash = 'product-page';
             }
         });
 

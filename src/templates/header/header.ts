@@ -61,6 +61,34 @@ class Header extends Component {
 
         this.container.append(this.linkCart);
 
+        this.linkCart.addEventListener('click', (event) => {
+            event.preventDefault();
+            // alert('в корзину не переходим');
+
+            const url = new URL(window.location.href);
+            //window.history.pushState(null, '', url);
+
+            // TODO: сформировать searchParams для корзины
+            // url.searchParams.set('id', `${this.item.id}`);
+            url.search = '';
+            window.history.replaceState(null, '', url);
+            window.location.hash = 'cart-page';
+        });
+
+        this.linkShop.addEventListener('click', (event) => {
+            event.preventDefault();
+            // alert('в магазин не переходим');
+
+            const url = new URL(window.location.href);
+            //window.history.pushState(null, '', url);
+
+            // TODO: сформировать searchParams для магазина
+            // url.searchParams.set('id', `${this.item.id}`);
+            url.search = '';
+            window.history.replaceState(null, '', url);
+            window.location.hash = 'main-page';
+        });
+
         return this.container;
     }
 }

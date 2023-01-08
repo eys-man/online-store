@@ -8,10 +8,6 @@ import Gallery from '../templates/gallery/gallery';
 import HeaderGallery from '../templates/header-gallery/header-gallery';
 
 class MainPage extends Page {
-    static TextObject = {
-        MainTitle: 'Main Page',
-    };
-
     static gallery: Gallery;
 
     constructor(id: string) {
@@ -37,6 +33,7 @@ class MainPage extends Page {
     }
 
     render() {
+        // левая часть
         const aside = document.createElement('aside');
         aside.className = 'filters';
 

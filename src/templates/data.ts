@@ -32,7 +32,8 @@ export interface Products {
 }
 
 class Data {
-    url: string;
+    url: string; // ссыль на страницу с данными
+    static pageURL: URL; // ссыль для навигации внутри приложения
     static search: string;
     static viewMode: string;
     static sortingMode: string;
@@ -52,11 +53,20 @@ class Data {
     static stockFiltered: MinMax = { min: -1, max: -1 }; // диапазон количества продуктов на складе отфильтрованный
 
     constructor(url: string) {
+        Data.pageURL = new URL(window.location.href);
+        // window.history.pushState(null, '', Data.pageURL);
+
+        Data.pageURL.search = '';
+        window.history.replaceState(null, '', Data.pageURL);
+        window.location.hash = 'main-page';
+        // Data.pageURL = new URL(String(window.location));
+        // Data.pageURL.hash = 'main-page';
+        // alert('конструктор Data: URL страницы = ' + window.location);
+        // alert('конструктор Data: pageURL = ' + Data.pageURL + ', hash = ' + Data.pageURL.hash);
+
         this.url = url;
         Data.viewMode = 'tiles'; // по умолчанию вид галереи "плитка"
-        // Data.viewMode = 'linear';
         Data.sortingMode = 'sort by price ↑'; // по умолчанию сортировка "цена от меньшей"
-        // Data.sortingMode = 'sort by rating ↑';
         Data.totalCost = 0;
         Data.totalItems = 0;
         Data.search = '';
