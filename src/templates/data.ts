@@ -54,7 +54,7 @@ class Data {
 
     constructor(url: string) {
         Data.pageURL = new URL(window.location.href);
-        // window.history.pushState(null, '', Data.pageURL);
+        window.history.pushState(null, '', Data.pageURL);
 
         Data.pageURL.search = '';
         window.history.replaceState(null, '', Data.pageURL);
