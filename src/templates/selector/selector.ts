@@ -20,12 +20,16 @@ class Selector extends Component {
     }
 
     render() {
-        this.container.addEventListener('change', () => {
+        this.container.addEventListener('change', async () => {
             if (Data.sortingMode !== (this.container as HTMLSelectElement).value) {
                 Data.sortingMode = (this.container as HTMLSelectElement).value;
                 // отсортировать массив товаров для вывода
                 Data.sort();
                 MainPage.gallery.render();
+
+                localStorage.setItem('sortingMode', Data.sortingMode);
+                await Data.makeURL();
+                // Data.saveData();
             }
         });
 

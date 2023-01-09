@@ -48,7 +48,7 @@ class Slider extends Component {
         this.pTo.innerText = `${rangeFiltered.max}/${range.max}`;
     }
 
-    controlFromSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement) {
+    async controlFromSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement) {
         const [from, to] = this.getParsed(fromSlider, toSlider);
         if (from > to) {
             fromSlider.value = `${to}`;
@@ -86,9 +86,11 @@ class Slider extends Component {
 
         const found = document.querySelector('.found') as HTMLElement;
         found.innerHTML = `Found: ${Data.filteredProducts.length}`;
+
+        await Data.makeURL();
     }
 
-    controlToSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement) {
+    async controlToSlider(fromSlider: HTMLInputElement, toSlider: HTMLInputElement) {
         const [from, to] = this.getParsed(fromSlider, toSlider);
         // this.setToggleAccessible(toSlider);
         if (from <= to) {
@@ -128,6 +130,8 @@ class Slider extends Component {
 
         const found = document.querySelector('.found') as HTMLElement;
         found.innerHTML = `Found: ${Data.filteredProducts.length}`;
+
+        await Data.makeURL();
     }
 
     getParsed(currentFrom: HTMLInputElement, currentTo: HTMLInputElement) {

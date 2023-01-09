@@ -103,16 +103,6 @@ class Category extends Component {
             if (Data.stockFiltered.min > x.stock) Data.stockFiltered.min = x.stock;
             if (Data.stockFiltered.max < x.stock) Data.stockFiltered.max = x.stock;
         });
-        // alert(
-        //     'price ' +
-        //         Data.priceFiltered.min +
-        //         '/' +
-        //         Data.priceFiltered.max +
-        //         ', stock ' +
-        //         Data.stockFiltered.min +
-        //         '/' +
-        //         Data.stockFiltered.max
-        // );
 
         await Data.makeFilteredArray();
         Data.sort();
@@ -139,6 +129,7 @@ class Category extends Component {
         found.innerHTML = `Found: ${Data.filteredProducts.length}`;
 
         await Header.update();
+        await Data.makeURL();
     }
 }
 

@@ -24,6 +24,7 @@ class App {
 
         if (idPage === PageIds.MainPage) {
             page = new MainPage(idPage);
+            Data.makeURL();
         } else if (idPage === PageIds.ProductPage) {
             page = new ProductPage(idPage);
         } else if (idPage === PageIds.CartPage) {

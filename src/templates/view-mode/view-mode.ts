@@ -26,21 +26,27 @@ class ViewMode extends Component {
         this.container.append(this.linear);
         this.container.append(this.tiles);
 
-        this.tiles.addEventListener('click', () => {
+        // TODO: сделать делегирование от this.container
+        this.tiles.addEventListener('click', async () => {
             if (Data.viewMode === 'linear') {
                 Data.viewMode = 'tiles';
                 this.linear.classList.remove('active');
                 this.tiles.classList.add('active');
                 MainPage.gallery.render();
+                localStorage.setItem('viewMode', Data.viewMode);
+                await Data.makeURL();
             }
         });
 
-        this.linear.addEventListener('click', () => {
+        this.linear.addEventListener('click', async () => {
             if (Data.viewMode === 'tiles') {
                 Data.viewMode = 'linear';
                 this.tiles.classList.remove('active');
                 this.linear.classList.add('active');
                 MainPage.gallery.render();
+
+                localStorage.setItem('viewMode', Data.viewMode);
+                await Data.makeURL();
             }
         });
 

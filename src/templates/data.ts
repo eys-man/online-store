@@ -32,8 +32,8 @@ export interface Products {
 }
 
 class Data {
-    url: string; // ссыль на страницу с данными
-    static pageURL: URL; // ссыль для навигации внутри приложения
+    dataURL: string; // ссыль на страницу с данными
+    static pageURL: URL; // динамически обновляемый URL страницы
     static search: string;
     static viewMode: string;
     static sortingMode: string;
@@ -52,19 +52,19 @@ class Data {
     static stock: MinMax = { min: -1, max: -1 }; // диапазон количества на складе ВСЕХ продуктов
     static stockFiltered: MinMax = { min: -1, max: -1 }; // диапазон количества продуктов на складе отфильтрованный
 
-    constructor(url: string) {
+    constructor(dataURL: string) {
         Data.pageURL = new URL(window.location.href);
-        window.history.pushState(null, '', Data.pageURL);
-
+        Data.pageURL.hash = 'main-page';
         Data.pageURL.search = '';
+
+        window.history.pushState(null, '', Data.pageURL);
         window.history.replaceState(null, '', Data.pageURL);
         window.location.hash = 'main-page';
-        // Data.pageURL = new URL(String(window.location));
-        // Data.pageURL.hash = 'main-page';
+
         // alert('конструктор Data: URL страницы = ' + window.location);
         // alert('конструктор Data: pageURL = ' + Data.pageURL + ', hash = ' + Data.pageURL.hash);
 
-        this.url = url;
+        this.dataURL = dataURL;
         Data.viewMode = 'tiles'; // по умолчанию вид галереи "плитка"
         Data.sortingMode = 'sort by price ↑'; // по умолчанию сортировка "цена от меньшей"
         Data.totalCost = 0;
@@ -179,6 +179,8 @@ class Data {
                 i += 1;
             }
         }
+
+        await Data.saveData();
     }
 
     // ---------------- сброс фильтров ------------------------
@@ -218,6 +220,7 @@ class Data {
         Data.sort();
 
         // await Search.reset();
+        // await Data.saveData();
     }
 
     // обновить полную стоимость в хэдере
@@ -232,18 +235,11 @@ class Data {
     }
 
     async getData() {
-        let response = await fetch(this.url);
+        let response = await fetch(this.dataURL);
         if (response.ok) {
             Data.data = await response.json();
             Data.products = Data.data['products'].slice(0);
             await Data.reset();
-
-            // вручную добавленные в корзину элементы
-            Data.selectedItems.add({ id: 1, quantity: 5 });
-            Data.selectedItems.add({ id: 7, quantity: 1 });
-            Data.selectedItems.add({ id: 9, quantity: 3 });
-            Data.selectedItems.add({ id: 34, quantity: 1 });
-            Data.selectedItems.add({ id: 87, quantity: 2 });
 
             await Data.updateCost();
 
@@ -251,6 +247,74 @@ class Data {
         } else {
             alert('error ' + response.status);
         }
+    }
+
+    // сохранить фильтры в localStorage
+    static async saveData() {
+        localStorage.setItem('search', Data.search);
+        localStorage.setItem('viewMode', Data.viewMode);
+        localStorage.setItem('sortingMode', Data.sortingMode);
+
+        const selectedCategory = Array.from(Data.selectedCategory).join('↔');
+        // const selectedCategory = JSON.stringify(Data.selectedCategory);
+        // alert('selectedCategory: ' + selectedCategory);
+        //localStorage.setItem('selectedCategory', selectedCategory);
+        localStorage.setItem('selectedCategory', JSON.stringify(selectedCategory));
+
+        const selectedBrand = Array.from(Data.selectedBrand).join('↔');
+        // const selectedBrand = JSON.stringify(Data.selectedBrand);
+        // alert('selectedBrand: ' + selectedBrand);
+        // localStorage.setItem('selectedBrand', selectedBrand);
+        localStorage.setItem('selectedBrand', JSON.stringify(selectedBrand));
+
+        const selectedItems: Array<Item> = Array.from(Data.selectedItems);
+        // const selectedItems = JSON.stringify(Data.selectedItems);
+        // alert('selectedItems: ' + selectedItems);
+        // localStorage.setItem('selectedItems', selectedItems);
+        localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+
+        const priceFiltered = JSON.stringify(Data.priceFiltered);
+        localStorage.setItem('priceFiltered', priceFiltered);
+
+        const stockFiltered = JSON.stringify(Data.stockFiltered);
+        localStorage.setItem('stockFiltered', stockFiltered);
+
+        // await Data.makeURL();
+    }
+
+    static async makeURL() {
+        Data.pageURL.search = '';
+        Data.pageURL.searchParams.set('search', Data.search);
+        Data.pageURL.searchParams.set('viewMode', Data.viewMode);
+        Data.pageURL.searchParams.set('sortingMode', Data.sortingMode);
+        const selectedCategory = Array.from(Data.selectedCategory).join('↔');
+        Data.pageURL.searchParams.set('selectedCategory', JSON.stringify(selectedCategory));
+        const selectedBrand = Array.from(Data.selectedBrand).join('↔');
+        Data.pageURL.searchParams.set('selectedBrand', JSON.stringify(selectedBrand));
+        const selectedItems: Array<Item> = Array.from(Data.selectedItems);
+        Data.pageURL.searchParams.set('selectedItems', JSON.stringify(selectedItems));
+        const priceFiltered = JSON.stringify(Data.priceFiltered);
+        Data.pageURL.searchParams.set('priceFiltered', JSON.stringify(priceFiltered));
+        const stockFiltered = JSON.stringify(Data.stockFiltered);
+        Data.pageURL.searchParams.set('stockFiltered', JSON.stringify(stockFiltered));
+
+        // let search = `search="${Data.search}"`;
+        // search += `&viewMode="${Data.viewMode}"`;
+        // search += `&sortingMode="${Data.sortingMode}"`;
+        // const selectedCategory = Array.from(Data.selectedCategory).join('↔');
+        // search += `&selectedCategory=${JSON.stringify(selectedCategory)}`;
+        // const selectedBrand = Array.from(Data.selectedBrand).join('↔');
+        // search += `&selectedBrand=${JSON.stringify(selectedBrand)}`;
+        // const selectedItems: Array<Item> = Array.from(Data.selectedItems);
+        // search += `&selectedItems=${JSON.stringify(selectedItems)}`;
+        // const priceFiltered = JSON.stringify(Data.priceFiltered);
+        // search += `&priceFiltered=${priceFiltered}`;
+        // const stockFiltered = JSON.stringify(Data.stockFiltered);
+        // search += `&stockFiltered=${stockFiltered}`;
+        // Data.pageURL.search = search;
+
+        // window.history.pushState(null, '', Data.pageURL);
+        window.history.replaceState(null, '', Data.pageURL);
     }
 }
 
