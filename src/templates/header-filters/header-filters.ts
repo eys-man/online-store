@@ -22,7 +22,7 @@ class HeaderFilters extends Component {
         copyLink.innerText = 'Copy link';
         this.container.append(copyLink);
 
-        this.container.addEventListener('click', (event) => {
+        this.container.addEventListener('click', async (event) => {
             const target = event.target;
             if (target instanceof HTMLButtonElement) {
                 if (target?.innerText === 'Reset filters') {
@@ -41,9 +41,31 @@ class HeaderFilters extends Component {
                     const search = document.body.querySelector('.search') as HTMLElement;
                     (search.querySelector('input') as HTMLInputElement).value = '';
                     // Header.update();
+                    await Data.makeURL();
                 } else if (target?.innerText === 'Copy link') {
-                    alert('Copy link');
+                    target.innerText = 'Copying...';
+                    setInterval(() => {
+                        navigator.clipboard
+                            .writeText(window.location.href)
+                            .then(() => {
+                                // alert('Получилось!');
+                                target.innerText = 'Copy link';
+                            })
+                            .catch((err) => {
+                                console.log('Что-то пошло не так...', err);
+                            });
+                    }, 500);
+                    // alert('Copy link');
                     // TODO: скопировать URL страницы в буфер обмена
+                    // navigator.clipboard
+                    //     .writeText(window.location.href)
+                    //     .then(() => {
+                    //         // alert('Получилось!');
+                    //         target.innerText = 'Copy link';
+                    //     })
+                    //     .catch((err) => {
+                    //         console.log('Что-то пошло не так...', err);
+                    //     });
                 }
             }
         });

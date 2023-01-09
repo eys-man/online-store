@@ -1,5 +1,5 @@
 import Component from '../components';
-import Data from '../data';
+import Data, { Item } from '../data';
 import './header.css';
 
 class Header extends Component {
@@ -25,7 +25,8 @@ class Header extends Component {
         this.linkCart.className = 'link-header';
         this.linkCart.href = '#cart-page';
 
-        this.img.src = '../../img/cart.png';
+        // this.img.src = '../../img/cart.png';
+        this.img.src = './img/cart.png';
         this.img.className = 'cart';
         this.p.className = 'quantity';
         // this.h2.className = 'h2';
@@ -61,6 +62,7 @@ class Header extends Component {
 
         this.container.append(this.linkCart);
 
+        // перейти в корзину
         this.linkCart.addEventListener('click', (event) => {
             event.preventDefault();
             // alert('в корзину не переходим');
@@ -69,12 +71,16 @@ class Header extends Component {
             window.history.pushState(null, '', url);
 
             // TODO: сформировать searchParams для корзины
-            // url.searchParams.set('id', `${this.item.id}`);
+            const selectedItems: Array<Item> = Array.from(Data.selectedItems);
+            // url.search = `selectedItems=${JSON.stringify(selectedItems)}`;
             url.search = '';
+            url.searchParams.set('selectedItems', JSON.stringify(selectedItems));
+
             window.history.replaceState(null, '', url);
             window.location.hash = 'cart-page';
         });
 
+        // прейти в магазин
         this.linkShop.addEventListener('click', (event) => {
             event.preventDefault();
             // alert('в магазин не переходим');

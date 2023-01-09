@@ -1,5 +1,5 @@
 import Component from '../components';
-import Data, { Product } from '../data';
+import Data, { Item, Product } from '../data';
 import Header from '../header/header';
 import './product-card.css';
 
@@ -129,7 +129,7 @@ class ProductCard extends Component {
             }
         });
 
-        add.addEventListener('click', () => {
+        add.addEventListener('click', async () => {
             if (add.textContent === 'Add to cart') {
                 Data.selectedItems.add({ id: this.id, quantity: 1 });
                 add.textContent = 'Remove from cart';
@@ -141,6 +141,9 @@ class ProductCard extends Component {
                 add.textContent = 'Add to cart';
                 Header.update();
             }
+
+            // обновить данные в localStorage
+            await Data.saveData();
         });
 
         buy.addEventListener('click', () => {
@@ -148,8 +151,12 @@ class ProductCard extends Component {
             const url = new URL(window.location.href);
             window.history.pushState(null, '', url);
 
-            url.search = '';
             // TODO: сгенерить URL для корзины
+            const selectedItems: Array<Item> = Array.from(Data.selectedItems);
+            // url.search = `selectedItems=${JSON.stringify(selectedItems)}`;
+            url.search = '';
+            url.searchParams.set('selectedItems', JSON.stringify(selectedItems));
+
             window.history.replaceState(null, '', url);
             window.location.hash = 'cart-page';
         });

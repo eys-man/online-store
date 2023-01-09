@@ -140,6 +140,7 @@ class Brand extends Component {
         found.innerHTML = `Found: ${Data.filteredProducts.length}`;
 
         await Header.update();
+        await Data.makeURL();
     }
 }
 
