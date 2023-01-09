@@ -66,7 +66,7 @@ class Header extends Component {
             // alert('в корзину не переходим');
 
             const url = new URL(window.location.href);
-            //window.history.pushState(null, '', url);
+            window.history.pushState(null, '', url);
 
             // TODO: сформировать searchParams для корзины
             // url.searchParams.set('id', `${this.item.id}`);
@@ -80,7 +80,7 @@ class Header extends Component {
             // alert('в магазин не переходим');
 
             const url = new URL(window.location.href);
-            //window.history.pushState(null, '', url);
+            window.history.pushState(null, '', url);
 
             // TODO: сформировать searchParams для магазина
             // url.searchParams.set('id', `${this.item.id}`);

@@ -1,5 +1,6 @@
 import Component from '../components';
 import Data, { Product } from '../data';
+import Header from '../header/header';
 import './product-card.css';
 
 class ProductCard extends Component {
@@ -19,9 +20,34 @@ class ProductCard extends Component {
     }
 
     render() {
-        // const productCard = document.createElement('div');
-        // productCard.className = 'product-card';
+        // ------------- хлебные крошки -----------
+        const breadcrumbs = document.createElement('ul');
+        breadcrumbs.className = 'breadcrumbs';
 
+        const ulItems = [`main-page`, `${this.item.category}`, `${this.item.brand}`, `${this.item.title}`];
+        ulItems.forEach((x, index) => {
+            const a = document.createElement('a');
+            // if (index < ulItems.length - 1) a.href = '#main-page';
+            if (index < ulItems.length - 1) {
+                const url = new URL(window.location.href);
+                url.search = '';
+                url.hash = 'main-page';
+                a.href = url.href;
+            } else a.href = window.location.href;
+
+            const li = document.createElement('li');
+            li.innerText = ulItems[index];
+            a.append(li);
+
+            breadcrumbs.append(a);
+        });
+
+        this.container.append(breadcrumbs);
+
+        const productCardContainer = document.createElement('div');
+        productCardContainer.className = 'product-card-container';
+
+        // ---------------- карточка товара ---------------------
         // левая часть
         const productGallery = document.createElement('div');
         productGallery.className = 'product-gallery';
@@ -33,13 +59,13 @@ class ProductCard extends Component {
 
             productGallery.append(productThumb);
         });
-        this.container.append(productGallery);
+        productCardContainer.append(productGallery);
 
         // средняя часть
         const img = document.createElement('img');
         img.className = 'product-img';
         img.src = this.item.images[0];
-        this.container.append(img);
+        productCardContainer.append(img);
 
         // правая часть
 
@@ -69,22 +95,64 @@ class ProductCard extends Component {
         description.innerHTML = str;
         info.append(description);
 
+        const price = document.createElement('p');
+        price.className = 'product-price';
+        price.innerHTML = `€${this.item.price}</br>`;
+        info.append(price);
+
+        // кнопки
         const buttons = document.createElement('div');
         buttons.className = 'product-buttons';
 
         const add = document.createElement('button');
         add.className = 'add';
-        add.innerHTML = 'Add to cart';
+        add.textContent = 'Add to cart';
+        Data.selectedItems.forEach((x) => {
+            if (this.id === x.id) add.textContent = 'Remove from cart';
+        });
 
         const buy = document.createElement('button');
         buy.className = 'buy';
-        buy.innerHTML = 'Buy now';
+        buy.textContent = 'Buy now';
         buttons.append(add);
         buttons.append(buy);
 
         info.append(buttons);
 
-        this.container.append(info);
+        productCardContainer.append(info);
+
+        this.container.append(productCardContainer);
+
+        productGallery.addEventListener('click', (event) => {
+            if (event.target !== null && (event.target as HTMLImageElement).className === 'product-thumb') {
+                img.src = (event.target as HTMLImageElement).src;
+            }
+        });
+
+        add.addEventListener('click', () => {
+            if (add.textContent === 'Add to cart') {
+                Data.selectedItems.add({ id: this.id, quantity: 1 });
+                add.textContent = 'Remove from cart';
+                Header.update();
+            } else {
+                Data.selectedItems.forEach((x) => {
+                    if (x.id === this.id) Data.selectedItems.delete(x);
+                });
+                add.textContent = 'Add to cart';
+                Header.update();
+            }
+        });
+
+        buy.addEventListener('click', () => {
+            // alert('в корзину');
+            const url = new URL(window.location.href);
+            window.history.pushState(null, '', url);
+
+            url.search = '';
+            // TODO: сгенерить URL для корзины
+            window.history.replaceState(null, '', url);
+            window.location.hash = 'cart-page';
+        });
 
         return this.container;
     }
