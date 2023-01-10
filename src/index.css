@@ -77,11 +77,17 @@ body {
     margin: auto;
 }
 
-.cart {
+#cart-page {
+    width: 100%;
+    height: 100%
+}
+
+.shopping-cart {
     /* flex-grow: 1; */
-    width: 80%;
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     border: 1px solid blue;
 }

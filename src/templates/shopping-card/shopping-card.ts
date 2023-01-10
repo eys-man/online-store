@@ -21,7 +21,7 @@ class ShoppingCard extends Component {
 
     render() {
         // ---------------- карточка товара ---------------------
-        this.container.className = 'shopping-card';
+        // this.container.className = 'shopping-card';
 
         const img = document.createElement('img');
         img.className = 'shopping-card-img';
