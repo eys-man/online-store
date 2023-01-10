@@ -1,20 +1,22 @@
 import Data from '../templates/data';
 import Page from '../templates/page';
+import ShoppingCard from '../templates/shopping-card/shopping-card';
 
 class CartPage extends Page {
-    static TextObject = {
-        MainTitle: 'Shopping Cart',
-    };
-
     constructor(id: string) {
         super(id);
     }
 
     render() {
+        this.container.className = 'shopping-card';
+
+        const listTitle = document.createElement('div');
+        listTitle.className = 'list-header';
+
         Data.selectedItems.forEach((x) => {
-            const p = document.createElement('p');
-            p.innerText = `id = ${x.id}, quantity = ${x.quantity}`;
-            this.container.append(p);
+            const card = new ShoppingCard('div', 'cart', x.id);
+
+            this.container.append(card.render());
         });
 
         return this.container;

@@ -76,3 +76,11 @@ body {
 #product-page {
     margin: auto;
 }
+
+.cart {
+    /* flex-grow: 1; */
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
