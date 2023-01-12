@@ -1,4 +1,4 @@
-import Data from '../templates/data';
+import Data, { Item } from '../templates/data';
 import Page from '../templates/page';
 import ShoppingCard from '../templates/shopping-card/shopping-card';
 
@@ -8,15 +8,48 @@ class CartPage extends Page {
     itemsPerPage: number; // макс. число товаров на странице
     constructor(id: string) {
         super(id);
-        this.curPage = 1; // страница по умолчанию
-        this.itemsPerPage = 5; // по умолчанию
+
+        // TODO: прочитать из localStorage selectedItems и настройки пагинации
+        let isLoad: boolean = true;
+        let selectedItems: Item[] = [];
+        if (localStorage.getItem('selectedItems') === null) {
+            Data.selectedItems = new Set(selectedItems);
+            isLoad = false;
+        } else {
+            selectedItems = JSON.parse(localStorage.getItem('selectedItems') as string);
+            Data.selectedItems = new Set(selectedItems);
+        }
+
+        if (localStorage.getItem('curPage') === null) {
+            this.curPage = 1; // страница по умолчанию
+            isLoad = false;
+        } else {
+            this.curPage = JSON.parse(localStorage.getItem('curPage') as string);
+        }
+
+        if (localStorage.getItem('itemsPerPage') === null) {
+            this.itemsPerPage = 1; // страница по умолчанию
+            isLoad = false;
+        } else {
+            this.itemsPerPage = JSON.parse(localStorage.getItem('itemsPerPage') as string);
+        }
+
+        if (isLoad === false) {
+            // TODO: прочитать URL
+
+            // настройки просмотра по умолчанию
+            this.itemsPerPage = 5; // по умолчанию
+        }
         this.numPages = Math.ceil(Data.selectedItems.size / this.itemsPerPage);
-        // alert('numPages ' + this.numPages + ', curPage ' + this.curPage + ', itemsPerPage ' + this.itemsPerPage);
     }
 
     render() {
         this.container.innerHTML = '';
         if (Data.selectedItems.size != 0) {
+            // TODO: записать в localStorage настройки просмотра
+            localStorage.setItem('itemsPerPage', JSON.stringify(this.itemsPerPage));
+            localStorage.setItem('curPage', JSON.stringify(this.curPage));
+
             this.numPages = Math.ceil(Data.selectedItems.size / this.itemsPerPage);
             if (this.curPage > this.numPages) this.curPage = this.numPages;
 
@@ -35,7 +68,7 @@ class CartPage extends Page {
 
             // число товаров на странице
             const limitP = document.createElement('p');
-            limitP.innerText = 'Items per page (3 ↔ 10)';
+            limitP.innerText = 'Items per page [3 - 10]';
             limit.append(limitP);
 
             const limitInput = document.createElement('input');
@@ -47,7 +80,6 @@ class CartPage extends Page {
             limitInput.step = '1';
 
             limit.append(limitInput);
-            // TODO:
 
             cardListHeader.append(limit);
 

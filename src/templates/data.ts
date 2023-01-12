@@ -239,7 +239,23 @@ class Data {
         if (response.ok) {
             Data.data = await response.json();
             Data.products = Data.data['products'].slice(0);
-            await Data.reset();
+
+            // if (!(await Data.loadData())) {
+            //     // если не прочитали фильтры из localStorage
+            //     // TODO: прочитать из URL
+
+            //     await Data.reset();
+            // }
+            // if (await Data.loadData()) {
+            //     // отсортировать отфильтрованный массив режимом сортировки по умолчанию
+            //     await Data.makeFilteredArray();
+            //     Data.sort();
+            // } else {
+            //     Data.reset();
+            // }
+
+            // Data.reset();
+            Data.reset();
 
             await Data.updateCost();
 
@@ -255,22 +271,13 @@ class Data {
         localStorage.setItem('viewMode', Data.viewMode);
         localStorage.setItem('sortingMode', Data.sortingMode);
 
-        const selectedCategory = Array.from(Data.selectedCategory).join('↔');
-        // const selectedCategory = JSON.stringify(Data.selectedCategory);
-        // alert('selectedCategory: ' + selectedCategory);
-        //localStorage.setItem('selectedCategory', selectedCategory);
+        const selectedCategory: Array<string> = Array.from(Data.selectedCategory);
         localStorage.setItem('selectedCategory', JSON.stringify(selectedCategory));
 
-        const selectedBrand = Array.from(Data.selectedBrand).join('↔');
-        // const selectedBrand = JSON.stringify(Data.selectedBrand);
-        // alert('selectedBrand: ' + selectedBrand);
-        // localStorage.setItem('selectedBrand', selectedBrand);
+        const selectedBrand: Array<string> = Array.from(Data.selectedBrand);
         localStorage.setItem('selectedBrand', JSON.stringify(selectedBrand));
 
         const selectedItems: Array<Item> = Array.from(Data.selectedItems);
-        // const selectedItems = JSON.stringify(Data.selectedItems);
-        // alert('selectedItems: ' + selectedItems);
-        // localStorage.setItem('selectedItems', selectedItems);
         localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
 
         const priceFiltered = JSON.stringify(Data.priceFiltered);
@@ -282,36 +289,107 @@ class Data {
         // await Data.makeURL();
     }
 
+    static async loadData() {
+        let isLoad: Boolean = true; // есть в localStorage или нет
+        // если хоть один не прочитается - данные не прочитаны из localStorage
+        // search
+        if (localStorage.getItem('search') === null) {
+            Data.search = '';
+            isLoad = false;
+        } else {
+            // Data.search = JSON.parse(localStorage.getItem('search') as string);
+            Data.search = localStorage.getItem('search') as string;
+            alert('search = ' + this.search);
+        }
+        // viewMode
+        if (localStorage.getItem('viewMode') === null) {
+            Data.viewMode = 'tiles';
+            isLoad = false;
+        } else {
+            // Data.viewMode = JSON.parse(localStorage.getItem('viewMode') as string);
+            Data.viewMode = localStorage.getItem('viewMode') as string;
+            alert('viewMode = ' + this.viewMode);
+        }
+        // sortingMode
+        if (localStorage.getItem('sortingMode') === null) {
+            Data.sortingMode = 'sort by price ↑';
+            isLoad = false;
+        } else {
+            // Data.sortingMode = JSON.parse(localStorage.getItem('sortingMode') as string);
+            Data.sortingMode = localStorage.getItem('sortingMode') as string;
+            alert('sortingMode = ' + this.sortingMode);
+        }
+        // selectedCategory
+        let category: string[] = [];
+        if (localStorage.getItem('selectedCategory') === null) {
+            Data.selectedCategory = new Set(category);
+            isLoad = false;
+        } else {
+            category = JSON.parse(localStorage.getItem('selectedCategory') as string);
+            Data.selectedCategory = new Set(category);
+            alert('category: ' + category);
+        }
+        // selectedBrand
+        let brand: string[] = [];
+        if (localStorage.getItem('selectedBrand') === null) {
+            Data.selectedBrand = new Set(brand);
+            isLoad = false;
+        } else {
+            brand = JSON.parse(localStorage.getItem('selectedBrand') as string);
+            Data.selectedBrand = new Set(brand);
+            alert('brand: ' + brand);
+        }
+        // selectedItems
+        let selectedItems: Item[] = [];
+        if (localStorage.getItem('selectedItems') === null) {
+            Data.selectedItems = new Set(selectedItems);
+            isLoad = false;
+        } else {
+            selectedItems = JSON.parse(localStorage.getItem('selectedItems') as string);
+            alert('selectedItems: ' + selectedItems);
+            Data.selectedItems = new Set(selectedItems);
+        }
+
+        // priceFiltered
+        if (localStorage.getItem('priceFiltered') === null) {
+            Data.priceFiltered = { min: -1, max: -1 };
+            isLoad = false;
+        } else {
+            Data.priceFiltered = JSON.parse(localStorage.getItem('priceFiltered') as string);
+            alert(Data.priceFiltered);
+        }
+
+        // stockFiltered
+        if (localStorage.getItem('stockFiltered') === null) {
+            Data.stockFiltered = { min: -1, max: -1 };
+            isLoad = false;
+        } else {
+            Data.stockFiltered = JSON.parse(localStorage.getItem('stockFiltered') as string);
+            alert(Data.stockFiltered);
+        }
+        return isLoad;
+    }
+
     static async makeURL() {
         Data.pageURL.search = '';
         Data.pageURL.searchParams.set('search', Data.search);
         Data.pageURL.searchParams.set('viewMode', Data.viewMode);
         Data.pageURL.searchParams.set('sortingMode', Data.sortingMode);
-        const selectedCategory = Array.from(Data.selectedCategory).join('↔');
+
+        const selectedCategory = Array.from(Data.selectedCategory);
         Data.pageURL.searchParams.set('selectedCategory', JSON.stringify(selectedCategory));
-        const selectedBrand = Array.from(Data.selectedBrand).join('↔');
+
+        const selectedBrand = Array.from(Data.selectedBrand);
         Data.pageURL.searchParams.set('selectedBrand', JSON.stringify(selectedBrand));
+
         const selectedItems: Array<Item> = Array.from(Data.selectedItems);
         Data.pageURL.searchParams.set('selectedItems', JSON.stringify(selectedItems));
+
         const priceFiltered = JSON.stringify(Data.priceFiltered);
         Data.pageURL.searchParams.set('priceFiltered', JSON.stringify(priceFiltered));
+
         const stockFiltered = JSON.stringify(Data.stockFiltered);
         Data.pageURL.searchParams.set('stockFiltered', JSON.stringify(stockFiltered));
-
-        // let search = `search="${Data.search}"`;
-        // search += `&viewMode="${Data.viewMode}"`;
-        // search += `&sortingMode="${Data.sortingMode}"`;
-        // const selectedCategory = Array.from(Data.selectedCategory).join('↔');
-        // search += `&selectedCategory=${JSON.stringify(selectedCategory)}`;
-        // const selectedBrand = Array.from(Data.selectedBrand).join('↔');
-        // search += `&selectedBrand=${JSON.stringify(selectedBrand)}`;
-        // const selectedItems: Array<Item> = Array.from(Data.selectedItems);
-        // search += `&selectedItems=${JSON.stringify(selectedItems)}`;
-        // const priceFiltered = JSON.stringify(Data.priceFiltered);
-        // search += `&priceFiltered=${priceFiltered}`;
-        // const stockFiltered = JSON.stringify(Data.stockFiltered);
-        // search += `&stockFiltered=${stockFiltered}`;
-        // Data.pageURL.search = search;
 
         // window.history.pushState(null, '', Data.pageURL);
         window.history.replaceState(null, '', Data.pageURL);

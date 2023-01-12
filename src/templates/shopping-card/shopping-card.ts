@@ -115,6 +115,8 @@ class ShoppingCard extends Component {
                 Header.update();
 
                 // TODO: записать в localStorage
+                const selectedItems: Item[] = Array.from(Data.selectedItems);
+                localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
             }
         });
 
@@ -136,6 +138,8 @@ class ShoppingCard extends Component {
                 this.parent.render();
             }
             // TODO: записать в localStorage
+            const selectedItems: Item[] = Array.from(Data.selectedItems);
+            localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
         });
         return this.container;
     }

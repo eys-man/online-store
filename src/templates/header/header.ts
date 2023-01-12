@@ -80,11 +80,9 @@ class Header extends Component {
             window.location.hash = 'cart-page';
         });
 
-        // прейти в магазин
+        // перейти в магазин
         this.linkShop.addEventListener('click', (event) => {
             event.preventDefault();
-            // alert('в магазин не переходим');
-
             const url = new URL(window.location.href);
             window.history.pushState(null, '', url);
 

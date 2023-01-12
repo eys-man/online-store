@@ -27,17 +27,32 @@ class ProductCard extends Component {
         const ulItems = [`main-page`, `${this.item.category}`, `${this.item.brand}`, `${this.item.title}`];
         ulItems.forEach((x, index) => {
             const a = document.createElement('a');
-            // if (index < ulItems.length - 1) a.href = '#main-page';
             if (index < ulItems.length - 1) {
                 const url = new URL(window.location.href);
                 url.search = '';
                 url.hash = 'main-page';
+
                 a.href = url.href;
+                // a.href = Data.pageURL.href;
             } else a.href = window.location.href;
 
             const li = document.createElement('li');
             li.innerText = ulItems[index];
             a.append(li);
+
+            a.addEventListener('click', (event) => {
+                if (a.href === window.location.href) return;
+
+                event.preventDefault();
+                const url = new URL(window.location.href);
+                window.history.pushState(null, '', url);
+
+                // TODO: сформировать searchParams для магазина
+                // url.searchParams.set('id', `${this.item.id}`);
+                url.search = '';
+                window.history.replaceState(null, '', url);
+                window.location.hash = 'main-page';
+            });
 
             breadcrumbs.append(a);
         });
